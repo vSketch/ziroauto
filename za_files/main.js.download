@@ -1,0 +1,17 @@
+(function () {
+
+  // mobile nav
+  var mobNav = document.getElementById('mobile_nav');
+
+
+  var mobNavFunc = function () {
+    this.classList.toggle('is-opened');
+    var body =document.body;
+    var mainNav = document.querySelectorAll('.main-nav ul')[0];
+    mainNav.classList.toggle('is-opened');
+    body.classList.toggle('lock');
+  };
+
+  mobNav.addEventListener('click', mobNavFunc, false);
+
+}());
