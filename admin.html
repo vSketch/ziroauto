@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Z Auto Service</title>
+    <link href="./za_files/css" rel="stylesheet">
+    <link rel="stylesheet" href="booking.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .admin-section {
+            margin-bottom: 3rem;
+        }
+        
+        .admin-section h2 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e03c31;
+            padding-bottom: 0.5rem;
+        }
+        
+        .date-blocker {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            margin-bottom: 1rem;
+        }
+        
+        .date-blocker input,
+        .date-blocker button {
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+        }
+        
+        .date-blocker button {
+            background: #e03c31;
+            color: white;
+            border-color: #e03c31;
+            cursor: pointer;
+        }
+        
+        .blocked-dates-list {
+            display: grid;
+            gap: 0.5rem;
+        }
+        
+        .blocked-date-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .unblock-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .bookings-table th,
+        .bookings-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .bookings-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Admin Panel</h1>
+        
+        <div class="admin-section">
+            <h2>Block Dates</h2>
+            <div class="date-blocker">
+                <div>
+                    <label for="blockDate">Date to Block:</label>
+                    <input type="date" id="blockDate" required>
+                </div>
+                <div>
+                    <label for="blockReason">Reason:</label>
+                    <input type="text" id="blockReason" placeholder="e.g., Rest day, Holiday">
+                </div>
+                <button onclick="blockDate()">Block Date</button>
+            </div>
+            
+            <div class="blocked-dates-list" id="blockedDatesList">
+                <!-- Blocked dates will be loaded here -->
+            </div>
+        </div>
+        
+        <div class="admin-section">
+            <h2>Recent Bookings</h2>
+            <table class="bookings-table" id="bookingsTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Vehicle</th>
+                        <th>Total</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsTableBody">
+                    <!-- Bookings will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function loadBlockedDates() {
+            try {
+                const response = await fetch('/api/blocked-dates');
+                const blockedDates = await response.json();
+                
+                const container = document.getElementById('blockedDatesList');
+                container.innerHTML = '';
+                
+                blockedDates.forEach(blocked => {
+                    const item = document.createElement('div');
+                    item.className = 'blocked-date-item';
+                    item.innerHTML = `
+                        <div>
+                            <strong>${new Date(blocked.date).toLocaleDateString()}</strong>
+                            ${blocked.reason ? ` - ${blocked.reason}` : ''}
+                        </div>
+                        <button class="unblock-btn" onclick="unblockDate('${blocked.date}')">
+                            Unblock
+                        </button>
+                    `;
+                    container.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Error loading blocked dates:', error);
+            }
+        }
+
+        async function blockDate() {
+            const date = document.getElementById('blockDate').value;
+            const reason = document.getElementById('blockReason').value;
+            
+            if (!date) {
+                alert('Please select a date');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/block-date', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ date, reason })
+                });
+                
+                if (response.ok) {
+                    document.getElementById('blockDate').value = '';
+                    document.getElementById('blockReason').value = '';
+                    loadBlockedDates();
+                }
+            } catch (error) {
+                console.error('Error blocking date:', error);
+            }
+        }
+
+        async function unblockDate(date) {
+            try {
+                const response = await fetch(`/api/block-date/${date}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    loadBlockedDates();
+                }
+            } catch (error) {
+                console.error('Error unblocking date:', error);
+            }
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBlockedDates();
+        });
+    </script>
+</body>
+</html>

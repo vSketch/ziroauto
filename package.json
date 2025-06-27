@@ -1,0 +1,20 @@
+{
+  "name": "ziro-auto-booking",
+  "version": "1.0.0",
+  "description": "Z Auto Service Booking System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.7",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "ical-generator": "^4.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

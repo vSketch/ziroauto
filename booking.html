@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Service - Z Auto Service</title>
+    <link href="./za_files/css" rel="stylesheet">
+    <link rel="stylesheet" href="./za_files/heg7qyy.css">
+    <link rel="stylesheet" type="text/css" href="./za_files/main.min.17855b259db460a7d6f08ffb04113cb49ad022cdd40245e9866466b99f60831e.css" media="screen">
+    <link rel="stylesheet" href="booking.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="index.html">
+            <figure class="site-header__logo">
+                <img src="./za_files/ziroautologo6.png" alt="Logo Ziro Auto">
+            </figure>
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="services.html" title="Services">Services</a></li>
+                <li><a href="gallery.html" title="Gallery">Gallery</a></li>
+                <li><a href="about.html" title="About">About</a></li>
+                <li><a href="contact.html" title="Contact">Contact</a></li>
+                <li><a href="tel:+18643334444" title="Contact2">(864)333-4444</a></li>
+            </ul>
+            <div id="mobile_nav" class="mobile-nav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="booking-main">
+        <div class="container">
+            <div class="booking-header">
+                <h1>Book Your Service</h1>
+                <p>Complete your booking in a few simple steps</p>
+            </div>
+
+            <!-- Service Selection -->
+            <section class="service-selection">
+                <h2>Selected Service</h2>
+                <div class="service-options" id="serviceOptions">
+                    <!-- Service options will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Booking Form -->
+            <form id="bookingForm" class="booking-form">
+                <!-- Vehicle Selection -->
+                <section class="form-section">
+                    <h3>Vehicle Type</h3>
+                    <div class="vehicle-grid" id="vehicleGrid">
+                        <!-- Vehicle options will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Calendar Section -->
+                <section class="form-section">
+                    <h3>Select Date & Time</h3>
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <button type="button" id="prevMonth" class="nav-btn">&lt;</button>
+                            <h4 id="currentMonth"></h4>
+                            <button type="button" id="nextMonth" class="nav-btn">&gt;</button>
+                        </div>
+                        <div class="calendar" id="calendar">
+                            <!-- Calendar will be generated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="time-selection" id="timeSelection" style="display: none;">
+                        <h4>Available Times</h4>
+                        <div class="time-slots" id="timeSlots">
+                            <!-- Time slots will be generated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Customer Information -->
+                <section class="form-section">
+                    <h3>Your Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Booking Summary -->
+                <section class="form-section">
+                    <div class="booking-summary" id="bookingSummary">
+                        <h3>Booking Summary</h3>
+                        <div class="summary-content">
+                            <p>Please select a service and vehicle to see pricing</p>
+                        </div>
+                    </div>
+                </section>
+
+                <button type="submit" class="submit-btn" id="submitBtn" disabled>Complete Booking</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <a href="index.html">
+            <figure class="site-footer__logo">
+                <img src="./za_files/ziroautologo3.png" alt="">
+            </figure>
+        </a>
+    </footer>
+
+    <div id="loadingModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="spinner"></div>
+            <p>Processing your booking...</p>
+        </div>
+    </div>
+
+    <div id="successModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Booking Confirmed!</h3>
+            <p>Thank you for your booking. You will receive a confirmation email shortly.</p>
+            <button onclick="window.location.href='index.html'" class="btn">Return Home</button>
+        </div>
+    </div>
+
+    <script src="./za_files/main.js.download"></script>
+    <script src="booking.js"></script>
+</body>
+</html>
